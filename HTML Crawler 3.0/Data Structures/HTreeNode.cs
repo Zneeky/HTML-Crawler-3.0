@@ -27,8 +27,8 @@ namespace HTML_Crawler_3._0.Data_Structures
         {
             Tag = treeNodeCopy.Tag;
             ValueText = treeNodeCopy.ValueText;
+            _children = new HLinkedList<HTreeNode>();
             _props = treeNodeCopy._props;
-            _children = treeNodeCopy._children;
         }
 
         public void AddChild(string tag, NLinkedList<string> _props, int level, string valueText)
@@ -38,8 +38,6 @@ namespace HTML_Crawler_3._0.Data_Structures
                 Tag = tag,
                 _props = _props,
                 ValueText = valueText,
-                //Parent = parent,
-
             };
             _children.Add(child);
         }

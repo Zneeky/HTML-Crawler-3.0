@@ -42,19 +42,19 @@ namespace HTML_Crawler_3._0
                 htmlS.Add(htmlSTags[i], htmlSTags[i]);
             }
         }
-        public static void BFSCoppy(HTreeNode htmlRoot, HTreeNode copyNode)
+        public static void BFSCoppy(HTreeNode oldNode, HTreeNode copyNode)
         {
             LinkQueue<HTreeNode> queue = new LinkQueue<HTreeNode>();
             NLinkedList<HTreeNode> vistied = new NLinkedList<HTreeNode>();
             LinkQueue<HTreeNode> toBeParents = new LinkQueue<HTreeNode>();
 
-            queue.EnQueue(htmlRoot);
-            vistied.AddFirst(htmlRoot);
+            queue.EnQueue(oldNode);
+            vistied.AddFirst(oldNode);
             toBeParents.EnQueue(copyNode);
             while (queue.IsEmpty() == false)
             {
-                if (queue.IsEmpty() == true)
-                    break;
+               /* if (queue.IsEmpty() == true)
+                    break;*/
                 var currentParent = toBeParents.DeQueue();
                 var treeNodeCurrent = queue.DeQueue();
 
@@ -63,14 +63,12 @@ namespace HTML_Crawler_3._0
                     if (vistied.Contains(child) == false && child.Equals(copyNode) == false)
                     {
                         var newCopy = new HTreeNode(child);
-                        newCopy._children = new HLinkedList<HTreeNode>();
-
                         currentParent._children.Add(newCopy);
                         toBeParents.EnQueue(newCopy);
                         queue.EnQueue(child);
                         vistied.AddFirst(child);
                     }
-                    if(child.Equals(copyNode) && copyNode.IsCoppied == true)
+                    else if(child.Equals(copyNode) && copyNode.IsCoppied == true)
                     {
                         var newCopy = new HTreeNode(child);
                         newCopy._children = new HLinkedList<HTreeNode>();
@@ -225,7 +223,6 @@ namespace HTML_Crawler_3._0
         {
             TextManipulation texter = new TextManipulation();
             int levels = 0;
-            int positionCounter = 1;
             for (int i = 0; i < path.Length; i++)
             {
                 if (path[i] != null)
@@ -268,7 +265,7 @@ namespace HTML_Crawler_3._0
             queue.EnQueue(childWrap);
             while (queue.IsEmpty() == false)
             {
-
+                int positionCounter = 1;
                 childWrap = queue.DeQueue();
                 treeNode = childWrap.Value;
                 if (childWrap.Depth == levels - 1 && treeNode.Tag == tagsAts[levels - 1, 0])
@@ -321,9 +318,6 @@ namespace HTML_Crawler_3._0
                                 }
                                 curNode = curNode.NextNode;
                             }
-                            copy._children = new HLinkedList<HTreeNode>();
-
-                            //treeNode._children.Add(copy);
                             BFSCoppy(newchildWrap.Value, copy);
                             newchildWrap.Value = copy;
 
@@ -375,12 +369,11 @@ namespace HTML_Crawler_3._0
                 }
             }
         }
-        public static HTreeNode BFSSearchV2(HTreeNode treeNode, string[] path)
+        public static HTreeNode BFSSearchV2(HTreeNode treeNode, string[] path,out bool deepCopy)
         {
             TextManipulation texter = new TextManipulation();
-
+            deepCopy = false;
             int levels = 0;
-            int positionCounter = 1;
             for (int i = 0; i < path.Length; i++)
             {
                 if (path[i] != null)
@@ -424,6 +417,7 @@ namespace HTML_Crawler_3._0
             queue.EnQueue(childWrap);
             while (queue.IsEmpty() == false)
             {
+                int positionCounter = 1;
                 childWrap = queue.DeQueue();
                 treeNode = childWrap.Value;
                 if (childWrap.Depth == levels - 1 && treeNode.Tag == tagsAts[levels - 1, 0])
@@ -436,7 +430,7 @@ namespace HTML_Crawler_3._0
                     var newchildWrap = new WrapClass<HTreeNode>(childWrap.Depth + 1, child);
                     if (newchildWrap.Depth < levels && child.Tag == tagsAts[newchildWrap.Depth, 0])
                     {
-                        if(child.IsCoppied==true && newchildWrap.Depth<levels-1)
+                        if(child.IsCoppied==true && newchildWrap.Depth<levels)
                         {
                             HTreeNode copy = new HTreeNode(child);
                             var curNode = treeNode._children.First();
@@ -449,10 +443,9 @@ namespace HTML_Crawler_3._0
                                 }
                                 curNode = curNode.NextNode;
                             }
-                            copy._children = new HLinkedList<HTreeNode>();
-
-                            treeNode._children.Add(copy);
                             BFSCoppy(newchildWrap.Value, copy);
+                            newchildWrap.Value = copy;
+                            deepCopy = true;
 
                         }
                         if (tagsAts[newchildWrap.Depth, 1] != null)
@@ -922,7 +915,8 @@ namespace HTML_Crawler_3._0
                             {
                                 HTreeNode treeNodeToCopy = null;
                                 HTreeNode treeNodeToInsertIn = null;
-                                string[] inputPath = texter.Split(commandArr[1], '/');
+                                bool copyStatus=false;
+                            string[] inputPath = texter.Split(commandArr[1], '/');
                                 try
                                 {
                                     if (inputPath[0] == "\"")
@@ -938,11 +932,12 @@ namespace HTML_Crawler_3._0
                                         }
                                         inputPath[inputPath.Length - 2] = copySubPart;
                                     }
-                                    treeNodeToCopy = BFSSearchV2(currentNode, inputPath);
+   
+                                    treeNodeToCopy = BFSSearchV2(currentNode, inputPath,out copyStatus);
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("EXAMPLE PATTERN\nPRINT \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
+                                    MessageBox.Show("EXAMPLE PATTERN\nCOPY \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
 
@@ -963,40 +958,23 @@ namespace HTML_Crawler_3._0
                                         }
                                         inputPath[inputPath.Length - 2] = copySubPart;
                                     }
-                                    treeNodeToInsertIn = BFSSearchV2(currentNode, inputPath);
+                                    var deepCopyToInserIn = false;
+                                    treeNodeToInsertIn = BFSSearchV2(currentNode, inputPath,out deepCopyToInserIn);
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("EXAMPLE PATTERN\nPRINT \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
+                                    MessageBox.Show("EXAMPLE PATTERN\nCOPY \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                                 if (treeNodeToCopy != null && treeNodeToInsertIn != null)
                                 {
-                                if (treeNodeToCopy.IsCoppied == true)
-                                {
-                                    HTreeNode copy = new HTreeNode(treeNodeToCopy);
-                                    copy._children = new HLinkedList<HTreeNode>();
-
-                                    treeNodeToInsertIn._children.Add(copy);
-                                    BFSCoppy(treeNodeToCopy, copy);
-
-                                    string textToPrint = "";
-                                   
-                                    DFSToTextRecV2(currentNode, ref textToPrint, 0);
-                                    ConsoleTextBox.AppendText(textToPrint);
-                                    // ConsoleTextBox.Text = textToPrint;
-                                }
-                                else
-                                {
                                     treeNodeToCopy.IsCoppied = true;
-                                    treeNodeToInsertIn._children.Add(treeNodeToCopy);
-                                    string textToPrint = "";
-                                    DFSToTextRecV2(currentNode, ref textToPrint, 0);
-                                    ConsoleTextBox.AppendText(textToPrint);
-                                    // ConsoleTextBox.Text = textToPrint;
-                                }
+                                    treeNodeToInsertIn._children.Add(treeNodeToCopy);                  
 
-                            }
+                                     string textToPrint = "";
+                                     DFSToTextRecV2(currentNode, ref textToPrint, 0);
+                                     ConsoleTextBox.AppendText(textToPrint);
+                                 }
                                 else
                                     MessageBox.Show("Paths did not return value", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
