@@ -992,7 +992,7 @@ namespace HTML_Crawler_3._0
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
             string text = "";
-            DFSToTextRecV2(htmlTree.Root, ref text,0);
+            DFSToTextRecV2(Root, ref text,0);
             File.WriteAllText(saveFileDialog1.FileName, text);
         }
 
