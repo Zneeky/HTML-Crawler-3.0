@@ -53,8 +53,6 @@ namespace HTML_Crawler_3._0
             toBeParents.EnQueue(copyNode);
             while (queue.IsEmpty() == false)
             {
-               /* if (queue.IsEmpty() == true)
-                    break;*/
                 var currentParent = toBeParents.DeQueue();
                 var treeNodeCurrent = queue.DeQueue();
 
