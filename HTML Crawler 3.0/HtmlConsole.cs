@@ -53,8 +53,6 @@ namespace HTML_Crawler_3._0
             toBeParents.EnQueue(copyNode);
             while (queue.IsEmpty() == false)
             {
-               /* if (queue.IsEmpty() == true)
-                    break;*/
                 var currentParent = toBeParents.DeQueue();
                 var treeNodeCurrent = queue.DeQueue();
 
@@ -600,7 +598,7 @@ namespace HTML_Crawler_3._0
             
 
         }
-        public static void DFSPrintToBMP(HTreeNode treeNode,bool isInTable,bool isInA, ref Bitmap bmp, ref Graphics g,ref int x,ref int y, string directory)
+        public  void DFSPrintToBMP(HTreeNode treeNode,bool isInTable,bool isInA, ref Bitmap bmp, ref Graphics g,ref int x,ref int y, string directory)
         {
             if (treeNode.Tag == "table")
                 isInTable = true;
@@ -723,7 +721,7 @@ namespace HTML_Crawler_3._0
                 
 
         }
-        public static void BitmapResize( ref Bitmap bmp, int width, int height,ref Graphics g)
+        public   void BitmapResize( ref Bitmap bmp, int width, int height,ref Graphics g)
         {
               var bmpLarge= new Bitmap(width, height);
               bmpLarge.MakeTransparent();
@@ -734,8 +732,8 @@ namespace HTML_Crawler_3._0
                 g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.DrawImage(bmp,0,0);
             bmp = bmpLarge;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
 
 
         }
@@ -803,6 +801,7 @@ namespace HTML_Crawler_3._0
             }
 
             htmlPictuerBox.Image = bmp;
+           // htmlPictuerBox.Invalidate();
             g.Dispose();
         }
         private void commandText_KeyDown(object sender, KeyEventArgs e)

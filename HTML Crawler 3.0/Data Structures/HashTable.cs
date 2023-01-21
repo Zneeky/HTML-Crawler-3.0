@@ -77,7 +77,7 @@ namespace HTML_Crawler_3._0.Data_Structures
             int total = 0;
 
             // Summing up all the ASCII values
-            // of each alphabet in the string
+            // of each letter in the string
             for (int k = 0; k < key.Length; k++)
             {
                 total += (int)key[k];
