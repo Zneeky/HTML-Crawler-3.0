@@ -183,7 +183,7 @@ namespace HTML_Crawler_3._0.Data_Structures
 
         public void Dispose()
         {
-
+           
         }
 
         public void Reset()
