@@ -367,10 +367,9 @@ namespace HTML_Crawler_3._0
                 }
             }
         }
-        public static HTreeNode BFSSearchV2(HTreeNode treeNode, string[] path,out bool deepCopy)
+        public static HTreeNode BFSSearchV2(HTreeNode treeNode, string[] path)
         {
             TextManipulation texter = new TextManipulation();
-            deepCopy = false;
             int levels = 0;
             for (int i = 0; i < path.Length; i++)
             {
@@ -443,7 +442,6 @@ namespace HTML_Crawler_3._0
                             }
                             BFSCoppy(newchildWrap.Value, copy);
                             newchildWrap.Value = copy;
-                            deepCopy = true;
 
                         }
                         if (tagsAts[newchildWrap.Depth, 1] != null)
@@ -914,7 +912,6 @@ namespace HTML_Crawler_3._0
                             {
                                 HTreeNode treeNodeToCopy = null;
                                 HTreeNode treeNodeToInsertIn = null;
-                                bool copyStatus=false;
                             string[] inputPath = texter.Split(commandArr[1], '/');
                                 try
                                 {
@@ -932,7 +929,7 @@ namespace HTML_Crawler_3._0
                                         inputPath[inputPath.Length - 2] = copySubPart;
                                     }
    
-                                    treeNodeToCopy = BFSSearchV2(currentNode, inputPath,out copyStatus);
+                                    treeNodeToCopy = BFSSearchV2(currentNode, inputPath);
                                 }
                                 catch
                                 {
@@ -957,8 +954,7 @@ namespace HTML_Crawler_3._0
                                         }
                                         inputPath[inputPath.Length - 2] = copySubPart;
                                     }
-                                    var deepCopyToInserIn = false;
-                                    treeNodeToInsertIn = BFSSearchV2(currentNode, inputPath,out deepCopyToInserIn);
+                                    treeNodeToInsertIn = BFSSearchV2(currentNode, inputPath);
                                 }
                                 catch
                                 {
@@ -997,7 +993,7 @@ namespace HTML_Crawler_3._0
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
                 return;
             string text = "";
-            DFSToTextRecV2(htmlTree.Root, ref text,0);
+            DFSToTextRecV2(Root, ref text,0);
             File.WriteAllText(saveFileDialog1.FileName, text);
         }
 
