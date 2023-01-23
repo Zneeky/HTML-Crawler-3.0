@@ -967,13 +967,18 @@ namespace HTML_Crawler_3._0
                                 
                                 if (treeNodeToCopy != null && treeNodeToInsertIn != null)
                                 {
-                                    treeNodeToCopy.IsCopied = true;
-                                    treeNodeToInsertIn._children.Add(treeNodeToCopy);                  
+                                 // treeNodeToCopy.IsCopied = true;
+                                 // treeNodeToInsertIn._children.Add(treeNodeToCopy);
+                                    foreach(var child in treeNodeToCopy._children)
+                                    {
+                                      child.IsCopied= true;
+                                      treeNodeToInsertIn._children.Add(child);
+                                    }
 
-                                     string textToPrint = "";
-                                     DFSToTextRecV2(currentNode, ref textToPrint, 0);
-                                     ConsoleTextBox.AppendText(textToPrint);
-                                 }
+                                    string textToPrint = "";
+                                    DFSToTextRecV2(currentNode, ref textToPrint, 0);
+                                    ConsoleTextBox.AppendText(textToPrint);
+                                }
                                 else
                                     MessageBox.Show("Paths did not return value", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
