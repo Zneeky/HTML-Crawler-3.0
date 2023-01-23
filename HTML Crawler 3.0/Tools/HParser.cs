@@ -34,7 +34,7 @@ namespace HTML_Crawler_3._0.Tools
                     }
                     i -= 1;//DECREMENT TO GET THE > to check for free text nodes
                     currentTag = texter.Trim(currentTag);
-                    if (currentTag[0] == '!')//COULD BE MORE SPECIFIC
+                    if (currentTag[0] == '!')
                         continue;
                     if (currentTag[0] == '/')
                     {
@@ -62,7 +62,7 @@ namespace HTML_Crawler_3._0.Tools
                         continue;
 
                     }
-                    else if (currentTag[currentTag.Length - 1] == '/')
+                    else if (currentTag[currentTag.Length - 1] == '/')//SELF COLSING 
                     {
                         string[] splitSlash = texter.Split(currentTag, '/');
                         currentTag = splitSlash[0];
@@ -90,7 +90,7 @@ namespace HTML_Crawler_3._0.Tools
                             nodeCounter++;
                         }
                     }
-                    else
+                    else 
                     {
                         string[] tagArr = texter.Split(currentTag, ' ');
                         if (nodeCounter == 0)
@@ -117,7 +117,7 @@ namespace HTML_Crawler_3._0.Tools
                                 oppenedTagsCounter++;
                             }
                             else
-                                throw new FormatException("FIRST TAG NOT HTML, OR CONTAINS ATRIBUTES");
+                                throw new FormatException("FIRST TAG NOT HTML");
                         }
                         else
                         {
