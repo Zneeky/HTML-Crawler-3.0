@@ -14,7 +14,7 @@ namespace HTML_Crawler_3._0
         TextManipulation texter = new TextManipulation();
         HParser htmlParser = new HParser();
         Bitmap bmp = new Bitmap(200, 700);
-        string html = "";
+        //string html = "";
         Tree htmlTree = new Tree();
         static HTreeNode Root = new HTreeNode();
         static Hashtable<string> htmlNS = new Hashtable<string>(97);
@@ -564,7 +564,7 @@ namespace HTML_Crawler_3._0
              }
              else
              {
-                    text += $"<{treeNode.Tag}>{treeNode.ValueText}";
+                    text += $"<{treeNode.Tag}>";
              }
 
             foreach (var child in treeNode._children)
@@ -648,6 +648,7 @@ namespace HTML_Crawler_3._0
                             BitmapResize(ref bmp, bmp.Width+width + x, y, ref g);
                         }
                         g.DrawImage(image, x, y);
+                        image.Dispose();
                         y += heigt;
 
                     }
@@ -672,7 +673,9 @@ namespace HTML_Crawler_3._0
                     BitmapResize(ref bmp, x + (int)stringSize.Width+100, bmp.Height, ref g);
                 }
                 g.DrawString(treeNode.ValueText, new Font("Times New Roman", 15), Brushes.Black,x,y);
-            }else if(treeNode.ValueText != "" && isInTable != true && isInA == true)
+                stringFont.Dispose();
+            }
+            else if(treeNode.ValueText != "" && isInTable != true && isInA == true)
             {
                 y += 35;
                 Font stringFont = new Font("Times New Roman", 15);
@@ -691,7 +694,9 @@ namespace HTML_Crawler_3._0
                     BitmapResize(ref bmp, x + (int)stringSize.Width + 100, bmp.Height, ref g);
                 }
                 g.DrawString(treeNode.ValueText, new Font("Times New Roman", 15,FontStyle.Underline), Brushes.Blue,x,y);
-            }else if(treeNode.ValueText != "" && isInTable == true && isInA != true)
+                stringFont.Dispose();
+            }
+            else if(treeNode.ValueText != "" && isInTable == true && isInA != true)
             {
                 y += 35;
                 Font stringFont= new Font("Times New Roman", 15);
@@ -710,28 +715,29 @@ namespace HTML_Crawler_3._0
                     BitmapResize(ref bmp, x + (int)stringSize.Width + 100, bmp.Height, ref g);
                 }
                 g.DrawString(treeNode.ValueText, new Font("Times New Roman", 15), Brushes.Black,x,y);
-                using (Pen pen = new Pen(Color.Black, 1))
+                using (Pen pen = new Pen(Color.Gray, 1))
                 {
                     g.DrawRectangle(pen, x, y, stringSize.Width, stringSize.Height);
                 }
-
+                stringFont.Dispose();
             }
                 
 
         }
         public   void BitmapResize( ref Bitmap bmp, int width, int height,ref Graphics g)
         {
-              var bmpLarge= new Bitmap(width, height);
-              bmpLarge.MakeTransparent();
-                g = Graphics.FromImage(bmpLarge);
-                g.CompositingMode = CompositingMode.SourceOver;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            var bmpLarge= new Bitmap(width, height);
+            g.Dispose();
+            g = Graphics.FromImage(bmpLarge);
+            /*g.CompositingMode = CompositingMode.SourceOver;*/
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.DrawImage(bmp,0,0);
+            bmp.Dispose();
             bmp = bmpLarge;
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+            /*GC.Collect();
+            GC.WaitForPendingFinalizers();*/
 
 
         }
@@ -750,7 +756,7 @@ namespace HTML_Crawler_3._0
             OpenFileDialog theDialog = new OpenFileDialog();
             theDialog.Title = "Open HTML File";
             theDialog.Filter = "HTML files|*.html";
-            theDialog.InitialDirectory = @"C:\";         
+            //theDialog.InitialDirectory = @"C:\";         
             if (theDialog.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show(theDialog.FileName.ToString());
@@ -762,7 +768,7 @@ namespace HTML_Crawler_3._0
             {
                 using (StreamReader sr = new StreamReader(pathToFile))
                 {
-                    html = sr.ReadToEnd();//all text wil be saved in text enters are also saved
+                    string html = sr.ReadToEnd();//all text wil be saved no matther the length
                     ConsoleTextBox.Text = html;
                     try
                     {
@@ -780,30 +786,29 @@ namespace HTML_Crawler_3._0
         private void HtmlImageButton_Click(object sender, EventArgs e)
         {
             bmp.Dispose();
-            bmp = new Bitmap(800, 800);
+            bmp = new Bitmap(800,800);
             Graphics g = Graphics.FromImage(bmp);
-
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                int x = 40;
-                int y = 10;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;              
+            int x = 40;
+            int y = 10;
             try
             {
                 DFSPrintToBMP(Root, false, false,  ref bmp,  ref g, ref x, ref y, directory);
             }
             catch
             {
-                MessageBox.Show("The html tree is empty! Please load a valid html document", "ERROR",
+                MessageBox.Show("The html tree is invalid!", "ERROR",
                                         MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
             htmlPictuerBox.Image = bmp;
-           // htmlPictuerBox.Invalidate();
             g.Dispose();
+           // bmp.Dispose();
+           // GC.Collect();
         }
         private void commandText_KeyDown(object sender, KeyEventArgs e)
-        {
+       {
             var currentNode = Root;
             TextBox t = (TextBox)sender;
 
@@ -858,7 +863,7 @@ namespace HTML_Crawler_3._0
                                     }
                                     catch
                                     {
-                                        MessageBox.Show("EXAMPLE PATTERN\nPRINT \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
+                                        MessageBox.Show("EXAMPLE PATTERN\nPRINT \"//html/body/p\"", "ERROR",
                                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
 
@@ -899,10 +904,10 @@ namespace HTML_Crawler_3._0
                                      ConsoleTextBox.AppendText(textToPrint);
                                 // ConsoleTextBox.Text = textToPrint;
 
-                            }
+                                }
                                 catch
                                 {
-                                    MessageBox.Show("EXAMPLE PATTERN\nPRINT \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
+                                    MessageBox.Show("EXAMPLE PATTERN\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
 
@@ -976,7 +981,11 @@ namespace HTML_Crawler_3._0
 
                             }
                             break;
-                        default:
+                    default:
+                           {
+                            MessageBox.Show("Commands allowed: PRINT SET COPY", "ERROR",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                           }
                             break;
 
 
