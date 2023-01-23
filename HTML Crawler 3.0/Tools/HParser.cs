@@ -86,7 +86,7 @@ namespace HTML_Crawler_3._0.Tools
 
                             }
                             currentProps.AddLast($"/");
-                            currentNode.AddChild(tagSpliter[0], currentProps, 1, "");
+                            currentNode.AddChild(tagSpliter[0], currentProps, "");
                             nodeCounter++;
                         }
                     }
@@ -136,7 +136,7 @@ namespace HTML_Crawler_3._0.Tools
                                         throw new FormatException("ATRIBUTE IS MISSING a \'=\' or a quatation or has a spelling issues");
 
                                 }
-                                currentNode.AddChild(tagArr[0], currentProps, 1, "");
+                                currentNode.AddChild(tagArr[0], currentProps, "");
                                 currentNode = currentNode._children.Last().Value;
                                 nodeStack.Push(currentNode);
                                 nodeCounter++;
@@ -164,7 +164,7 @@ namespace HTML_Crawler_3._0.Tools
                     if (currentText != "")
                     {
                         NLinkedList<string> currentProps = new NLinkedList<string>();
-                        currentNode.AddChild("", currentProps, 1, currentText);
+                        currentNode.AddChild("", currentProps, currentText);
                         nodeCounter++;
                     }
 
@@ -234,7 +234,6 @@ namespace HTML_Crawler_3._0.Tools
                         {
                             NLinkedList<string> currentProps = new NLinkedList<string>();
                             string sep = "";
-                            bool hasEqauls = false;
                             for (int j = 1; j < tagSpliter.Length; j++)
                             {
                                 if (PropIsValid(tagSpliter[j]))
@@ -255,7 +254,7 @@ namespace HTML_Crawler_3._0.Tools
                             else
                             {
                                 currentProps.AddLast($"/");
-                                currentNode.AddChild(tagSpliter[0], currentProps, 1, "");
+                                currentNode.AddChild(tagSpliter[0], currentProps, "");
                             }
                         }
                     }
@@ -266,7 +265,6 @@ namespace HTML_Crawler_3._0.Tools
                         {
                             NLinkedList<string> currentProps = new NLinkedList<string>();
                             string sep = "";
-                            bool hasEqauls = false;
                             for (int j = 1; j < tagArr.Length; j++)
                             {
                                 if (PropIsValid(tagArr[j]))
@@ -288,7 +286,7 @@ namespace HTML_Crawler_3._0.Tools
                             }
                             else
                             {
-                                currentNode.AddChild(tagArr[0], currentProps, 1, "");
+                                currentNode.AddChild(tagArr[0], currentProps, "");
                                 currentNode = currentNode._children.Last().Value;
                                 nodeStack.Push(currentNode);
                                 oppenedTagsCounter++;
@@ -325,7 +323,7 @@ namespace HTML_Crawler_3._0.Tools
                         else
                         {
                             NLinkedList<string> currentProps = new NLinkedList<string>();
-                            currentNode.AddChild("", currentProps, 1, currentText);
+                            currentNode.AddChild("", currentProps, currentText);
                         }
                     }
 

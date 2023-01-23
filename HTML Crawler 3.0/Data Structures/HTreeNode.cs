@@ -27,7 +27,7 @@ namespace HTML_Crawler_3._0.Data_Structures
             _props = treeNodeCopy._props;
         }
 
-        public void AddChild(string tag, NLinkedList<string> _props, int level, string valueText)
+        public void AddChild(string tag, NLinkedList<string> _props, string valueText)
         {
             var child = new HTreeNode
             {

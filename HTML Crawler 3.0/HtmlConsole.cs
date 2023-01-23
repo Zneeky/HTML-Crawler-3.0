@@ -367,7 +367,7 @@ namespace HTML_Crawler_3._0
                 }
             }
         }
-        public static HTreeNode BFSSearchV2(HTreeNode treeNode, string[] path)
+        public static HTreeNode BFSSearchV2(HTreeNode treeNode, string[] path,int depth)
         {
             TextManipulation texter = new TextManipulation();
             int levels = 0;
@@ -427,7 +427,7 @@ namespace HTML_Crawler_3._0
                     var newchildWrap = new WrapClass<HTreeNode>(childWrap.Depth + 1, child);
                     if (newchildWrap.Depth < levels && child.Tag == tagsAts[newchildWrap.Depth, 0])
                     {
-                        if(child.IsCoppied==true && newchildWrap.Depth<levels)
+                        if(child.IsCoppied==true && newchildWrap.Depth<levels-depth)
                         {
                             HTreeNode copy = new HTreeNode(child);
                             var curNode = treeNode._children.First();
@@ -932,7 +932,7 @@ namespace HTML_Crawler_3._0
                                         inputPath[inputPath.Length - 2] = copySubPart;
                                     }
    
-                                    treeNodeToCopy = BFSSearchV2(currentNode, inputPath);
+                                    treeNodeToCopy = BFSSearchV2(currentNode, inputPath,1);
                                 }
                                 catch
                                 {
@@ -957,14 +957,27 @@ namespace HTML_Crawler_3._0
                                         }
                                         inputPath[inputPath.Length - 2] = copySubPart;
                                     }
-                                    treeNodeToInsertIn = BFSSearchV2(currentNode, inputPath);
+                                    treeNodeToInsertIn = BFSSearchV2(currentNode, inputPath,0);
                                 }
                                 catch
                                 {
                                     MessageBox.Show("EXAMPLE PATTERN\nCOPY \"//html/body/p\"\nSET \"//html/body/div/div\" \"<b>Text4</b>\"", "ERROR",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
-                                if (treeNodeToCopy != null && treeNodeToInsertIn != null)
+                                
+                                /*if (treeNodeToInsertIn.IsCoppied && treeNodeToCopy != null && treeNodeToInsertIn != null)
+                                {
+                                  treeNodeToCopy.IsCoppied = true;
+                                  var newNode = new HTreeNode(treeNodeToInsertIn);
+                                  BFSCoppy(treeNodeToInsertIn, newNode);
+                                  newNode._children.Add(treeNodeToCopy);
+                                  treeNodeToInsertIn = newNode;
+
+                                  string textToPrint = "";
+                                  DFSToTextRecV2(currentNode, ref textToPrint, 0);
+                                  ConsoleTextBox.AppendText(textToPrint);
+                                }
+                                else */if (treeNodeToCopy != null && treeNodeToInsertIn != null)
                                 {
                                     treeNodeToCopy.IsCoppied = true;
                                     treeNodeToInsertIn._children.Add(treeNodeToCopy);                  

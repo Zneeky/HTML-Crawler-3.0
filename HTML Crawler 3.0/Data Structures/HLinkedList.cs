@@ -48,7 +48,7 @@ namespace HTML_Crawler_3._0.Data_Structures
 
             //If there already is a first element in the list,
             //change its prevNode to the newly made newNode,
-            //otherwise it becomes the both the tail and the head as the list is empty
+            //otherwise it becomes both the tail and the head as the list is empty
             if (head != null)
                 head.PrevNode = newNode;
             else
@@ -184,6 +184,7 @@ namespace HTML_Crawler_3._0.Data_Structures
 
         public void Dispose()
         {
+           
            GC.Collect();
            GC.SuppressFinalize(this);
         }
