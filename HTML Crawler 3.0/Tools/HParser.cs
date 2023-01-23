@@ -238,7 +238,7 @@ namespace HTML_Crawler_3._0.Tools
                         string[] splitSlash = texter.Split(currentTag, '/');
                         currentTag = splitSlash[0];
                         string[] tagSpliter = texter.Split(currentTag, ' ');
-                        if (tagSpliter[0] == htmlS.Get(tagSpliter[0])) //SELF COLSING 
+                        if (tagSpliter[0] == htmlS.Get(tagSpliter[0])) //SELF 
                         {
                             NLinkedList<string> currentProps = new NLinkedList<string>();
                             string sep = "";
@@ -265,11 +265,15 @@ namespace HTML_Crawler_3._0.Tools
                                 currentNode.AddChild(tagSpliter[0], currentProps, "");
                             }
                         }
+                        else
+                        {
+                            throw new FormatException("Not adequate tag!");
+                        }
                     }
                     else
                     {
                         string[] tagArr = texter.Split(currentTag, ' ');
-                        if (tagArr[0] == htmlNS.Get(tagArr[0])) // NOT SELF CLOSING
+                        if (tagArr[0] == htmlNS.Get(tagArr[0])) // NOT SELF 
                         {
                             NLinkedList<string> currentProps = new NLinkedList<string>();
                             string sep = "";
@@ -299,6 +303,10 @@ namespace HTML_Crawler_3._0.Tools
                                 nodeStack.Push(currentNode);
                                 oppenedTagsCounter++;
                             }
+                        }
+                        else
+                        {
+                            throw new FormatException("Not adequate tag!");
                         }
                     }
                 }
