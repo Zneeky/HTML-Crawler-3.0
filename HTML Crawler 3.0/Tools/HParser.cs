@@ -62,12 +62,12 @@ namespace HTML_Crawler_3._0.Tools
                         continue;
 
                     }
-                    else if (currentTag[currentTag.Length - 1] == '/')//SELF COLSING 
+                    else if (currentTag[currentTag.Length - 1] == '/')//SELF 
                     {
                         string[] splitSlash = texter.Split(currentTag, '/');
                         currentTag = splitSlash[0];
                         string[] tagSpliter = texter.Split(currentTag, ' ');
-                        if (tagSpliter[0] == htmlS.Get(tagSpliter[0])) //SELF COLSING 
+                        if (tagSpliter[0] == htmlS.Get(tagSpliter[0])) //SELF
                         {
                             NLinkedList<string> currentProps = new NLinkedList<string>();
                             string sep = "";
@@ -89,13 +89,17 @@ namespace HTML_Crawler_3._0.Tools
                             currentNode.AddChild(tagSpliter[0], currentProps, "");
                             nodeCounter++;
                         }
+                        else
+                        {
+                            throw new FormatException("Not adequate tag!");
+                        }
                     }
                     else 
                     {
                         string[] tagArr = texter.Split(currentTag, ' ');
                         if (nodeCounter == 0)
                         {
-                            if (tagArr[0] == htmlNS.Get(tagArr[0]) && tagArr[0] == "html")
+                            if (tagArr[0] == "html")
                             {
                                 NLinkedList<string> currentProps = new NLinkedList<string>();
                                 string sep = "";
@@ -121,7 +125,7 @@ namespace HTML_Crawler_3._0.Tools
                         }
                         else
                         {
-                            if (tagArr[0] == htmlNS.Get(tagArr[0]) || tagArr[0] == htmlS.Get(tagArr[0])) // NOT SELF CLOSING
+                            if (tagArr[0] == htmlNS.Get(tagArr[0]) || tagArr[0] == htmlS.Get(tagArr[0])) // NOT SELF
                             {
                                 NLinkedList<string> currentProps = new NLinkedList<string>();
                                 string sep = "";
@@ -141,6 +145,10 @@ namespace HTML_Crawler_3._0.Tools
                                 nodeStack.Push(currentNode);
                                 nodeCounter++;
                                 oppenedTagsCounter++;
+                            }
+                            else
+                            {
+                                throw new FormatException("Not adequate closing tag!");
                             }
                         }
                     }

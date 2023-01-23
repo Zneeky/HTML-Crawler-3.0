@@ -22,7 +22,7 @@ namespace HTML_Crawler_3._0.Data_Structures
         public T Get(string key)
         {
 
-            var (_, node) = GetNodeByKey(key);
+            var node = MyGetNodeByKey(key);
             if (node == null) return default(T);
 
             return node.Value;
@@ -65,28 +65,32 @@ namespace HTML_Crawler_3._0.Data_Structures
             previous.Next = currnet.Next;
             return true;
         }
-        /*  public bool ContainsKey(string key)
-          {
 
-              var (_, node) = GetNodeByKey(key);
-              return null != node;
-          }*/
 
         public int GetBucketByKey(string key)
         {
             int total = 0;
-
-            // Summing up all the ASCII values
-            // of each letter in the string
             for (int k = 0; k < key.Length; k++)
             {
                 total += (int)key[k];
             }
 
             return total % _buckets.Length;
-            // return Math.Abs(key.GetHashCode() % _buckets.Length); //FIX GETHASHCODE
         }
 
+        protected HashNode<T> MyGetNodeByKey(string key)
+        {
+            int position = GetBucketByKey(key);
+            HashNode<T> listNode = _buckets[position];
+
+            while (null != listNode)
+            {
+                if (listNode.Key == key) return (listNode);
+                listNode = listNode.Next;
+            }
+
+            return null;
+        }
         protected (HashNode<T> previous, HashNode<T> current) GetNodeByKey(string key)
         {
             int position = GetBucketByKey(key);
