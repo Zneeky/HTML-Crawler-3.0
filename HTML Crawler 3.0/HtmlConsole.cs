@@ -13,7 +13,7 @@ namespace HTML_Crawler_3._0
     {
         TextManipulation texter = new TextManipulation();
         HParser htmlParser = new HParser();
-        Bitmap bmp = new Bitmap(200, 700);
+        Bitmap bmp = new Bitmap(800, 800);
         //string html = "";
         Tree htmlTree = new Tree();
         static HTreeNode Root = new HTreeNode();
@@ -791,8 +791,8 @@ namespace HTML_Crawler_3._0
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;              
-            int x = 40;
-            int y = 10;
+            int x = 5;
+            int y = 0;
             try
             {
                 DFSPrintToBMP(Root, false, false,  ref bmp,  ref g, ref x, ref y, directory);
@@ -804,8 +804,6 @@ namespace HTML_Crawler_3._0
             }
             htmlPictuerBox.Image = bmp;
             g.Dispose();
-           // bmp.Dispose();
-           // GC.Collect();
         }
         private void commandText_KeyDown(object sender, KeyEventArgs e)
        {

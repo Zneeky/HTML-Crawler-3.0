@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace HTML_Crawler_3._0.Data_Structures
 {
@@ -183,7 +184,7 @@ namespace HTML_Crawler_3._0.Data_Structures
 
         public void Dispose()
         {
-           
+          GC.SuppressFinalize(this);
         }
 
         public void Reset()
