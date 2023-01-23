@@ -10,7 +10,7 @@ namespace HTML_Crawler_3._0.Data_Structures
 
         public NLinkedList<string> _props;
 
-        public bool IsCoppied = false;
+        public bool IsCopied = false;
 
         public HLinkedList<HTreeNode> _children;
 

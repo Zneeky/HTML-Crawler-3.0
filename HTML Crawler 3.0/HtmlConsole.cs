@@ -66,7 +66,7 @@ namespace HTML_Crawler_3._0
                         queue.EnQueue(child);
                         vistied.AddFirst(child);
                     }
-                    else if(child.Equals(copyNode) && copyNode.IsCoppied == true)
+                    else if(child.Equals(copyNode) && copyNode.IsCopied == true)
                     {
                         var newCopy = new HTreeNode(child);
                         newCopy._children = new HLinkedList<HTreeNode>();
@@ -299,7 +299,7 @@ namespace HTML_Crawler_3._0
                     var newchildWrap = new WrapClass<HTreeNode>(childWrap.Depth+1, child);
                     if (newchildWrap.Depth < levels && child.Tag == tagsAts[newchildWrap.Depth, 0])
                     {
-                        if (child.IsCoppied == true)
+                        if (child.IsCopied == true)
                         {
                             HTreeNode copy = new HTreeNode(child);
                             var curNode = treeNode._children.First();
@@ -427,7 +427,7 @@ namespace HTML_Crawler_3._0
                     var newchildWrap = new WrapClass<HTreeNode>(childWrap.Depth + 1, child);
                     if (newchildWrap.Depth < levels && child.Tag == tagsAts[newchildWrap.Depth, 0])
                     {
-                        if(child.IsCoppied==true && newchildWrap.Depth<levels-depth)
+                        if(child.IsCopied==true && newchildWrap.Depth<levels-depth)
                         {
                             HTreeNode copy = new HTreeNode(child);
                             var curNode = treeNode._children.First();
@@ -965,21 +965,9 @@ namespace HTML_Crawler_3._0
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                                 
-                                /*if (treeNodeToInsertIn.IsCoppied && treeNodeToCopy != null && treeNodeToInsertIn != null)
+                                if (treeNodeToCopy != null && treeNodeToInsertIn != null)
                                 {
-                                  treeNodeToCopy.IsCoppied = true;
-                                  var newNode = new HTreeNode(treeNodeToInsertIn);
-                                  BFSCoppy(treeNodeToInsertIn, newNode);
-                                  newNode._children.Add(treeNodeToCopy);
-                                  treeNodeToInsertIn = newNode;
-
-                                  string textToPrint = "";
-                                  DFSToTextRecV2(currentNode, ref textToPrint, 0);
-                                  ConsoleTextBox.AppendText(textToPrint);
-                                }
-                                else */if (treeNodeToCopy != null && treeNodeToInsertIn != null)
-                                {
-                                    treeNodeToCopy.IsCoppied = true;
+                                    treeNodeToCopy.IsCopied = true;
                                     treeNodeToInsertIn._children.Add(treeNodeToCopy);                  
 
                                      string textToPrint = "";
