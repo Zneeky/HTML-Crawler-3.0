@@ -184,9 +184,7 @@ namespace HTML_Crawler_3._0.Data_Structures
 
         public void Dispose()
         {
-           
            GC.Collect();
-           GC.SuppressFinalize(this);
         }
 
         public void Reset()
