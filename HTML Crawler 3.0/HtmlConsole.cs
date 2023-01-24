@@ -45,11 +45,11 @@ namespace HTML_Crawler_3._0
         public static void BFSCoppy(HTreeNode oldNode, HTreeNode copyNode)
         {
             LinkQueue<HTreeNode> queue = new LinkQueue<HTreeNode>();
-            NLinkedList<HTreeNode> vistied = new NLinkedList<HTreeNode>();
+           /* NLinkedList<HTreeNode> vistied = new NLinkedList<HTreeNode>();*/
             LinkQueue<HTreeNode> toBeParents = new LinkQueue<HTreeNode>();
 
             queue.EnQueue(oldNode);
-            vistied.AddFirst(oldNode);
+            /*vistied.AddFirst(oldNode);*/
             toBeParents.EnQueue(copyNode);
             while (queue.IsEmpty() == false)
             {
@@ -58,13 +58,13 @@ namespace HTML_Crawler_3._0
 
                 foreach (var child in treeNodeCurrent._children)
                 {
-                    if (vistied.Contains(child) == false && child.Equals(copyNode) == false)
+                    if (/*vistied.Contains(child) == false &&*/ child.Equals(copyNode) == false)
                     {
                         var newCopy = new HTreeNode(child);
                         currentParent._children.Add(newCopy);
                         toBeParents.EnQueue(newCopy);
                         queue.EnQueue(child);
-                        vistied.AddFirst(child);
+                       /* vistied.AddFirst(child);*/
                     }
                     else if(child.Equals(copyNode) && copyNode.IsCopied == true)
                     {
@@ -74,7 +74,7 @@ namespace HTML_Crawler_3._0
                         currentParent._children.Add(newCopy);
                         toBeParents.EnQueue(newCopy);
                         queue.EnQueue(child);
-                        vistied.AddFirst(child);
+                        /*vistied.AddFirst(child);*/
                     }
 
                 }
